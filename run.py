@@ -13,7 +13,7 @@ main_url = 'https://www.naver.com/'
 keyword = '유미의세포들 구웅'
 
 # 드라이버 로드
-driver = wd.Chrome(executable_path='chromedriver.exe')  # 브라우저가 뜬다
+driver = wd.Chrome(executable_path='downloads/chromedriver.exe')  # 브라우저가 뜬다
 # 차후 옵션(프록시, 에이전트 조작, 이미지를 배제) 부여하여 크롤링을 오래돌리면 임시파일들이 쌓인다!! -> 템포 파일 삭제
 
 # 사이트 접속 (get)
