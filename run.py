@@ -8,6 +8,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import time
+
 # 사전에 필요한 정보 로드 -> 디비 혹은 쉘, 배치 파일에서 인자로 받아서 세팅
 main_url = 'https://www.naver.com/'
 keyword = '유미의세포들 구웅'
@@ -45,5 +47,30 @@ driver.implicitly_wait(10)
 
 # 더보기 눌러서 새로운 페이지 진입
 driver.find_element_by_link_text('블로그 더보기').click()
+# driver.find_element_by_css_selector('.blog>.section>._blogBase>._prs_blg').click()
 
 # why? 서버가 늦게 뜨는 경우 대비 
+
+# 게시판에서 데이터를 가져올때 
+# 데이터가 많으면 세션(혹은 로그인을 해서 접근되는 사이트일 경우) 관리
+# 특정 단위별로 로그아웃 로그인 계속 시도
+# 특정 게시물이 사라질 경우 => 팝업 발생(없는 ~~~) => 팝업 처리 검토
+
+# 게시판을 스캔시 -> 임계점을 모름!!!
+# 게시판을 스캔해 => 메타 정보를 획득 => 루프를 돌려서 일괄적으로 방문 접근 처리
+
+# 1년 크롤링
+# submit_date_option('1year'); return false;
+
+# return goOtherCR(this,'a=blg.paging&i=&r=2&u='+urlencode(urlexpand(this.href))); 스크립트 실행
+# 45은 임시값, 게시물을 넘어갔을때 현상을 확인차
+for page in range(1, 45):
+    try:
+        # 자바스크립트 구동하기
+        return_value = driver.execute_script("return goOtherCR(this,'a=blg.paging&i=&r={}&u='+urlencode(urlexpand(this.href)));".format(page))
+        print(return_value)
+        time.sleep(2)
+        print("%s 페이지 이동" % page)
+
+    except Exception as e1:
+        print('오류', e1)
